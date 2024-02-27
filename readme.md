@@ -29,4 +29,4 @@ pip install python-dotenv
 
 7) Create the roles in your server and replace the ID's
 
-8) Start the bot :)
+8) Start the bot :) 
