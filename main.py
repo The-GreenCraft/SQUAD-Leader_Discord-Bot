@@ -32,7 +32,7 @@ class Squad(discord.ui.View):
   def __init__(self):
     super().__init__(timeout=None)
     self.user_statuses = {
-    }  # Dictionary zum Speichern der Status jedes Benutzers
+    }  
 
   @discord.ui.button(label="JOIN",
                      custom_id="button-1",
@@ -64,25 +64,18 @@ class Squad(discord.ui.View):
     if user_id == squad_creator:
       await interaction.response.send_message("Abort Squad?", ephemeral=True)
 
-    # Überprüfen, ob der Benutzer bereits in der Liste ist
     if user_id not in self.user_statuses:
-      # Den Benutzer zur Liste hinzufügen
       self.user_statuses[user_id] = status_icon
     else:
-      # Den Status des Benutzers aktualisieren
       self.user_statuses[user_id] = status_icon
 
-    # Aktualisiere das Embed mit dem neuen Status
     for field in original_embed.fields:
-      # Überprüfen, ob das Feld den Namen eines Benutzers enthält
       if field.name.endswith((f"✅ {interaction.user.display_name}",
                               f"🕑 {interaction.user.display_name}",
                               f"❌ {interaction.user.display_name}")):
-        # Aktualisiere das Benutzerfeld
         field.name = f"{status_icon} {interaction.user.display_name}"
         break
     else:
-      # Wenn kein passendes Feld gefunden wurde, füge ein neues Benutzerfeld hinzu
       original_embed.add_field(
           name=f"{status_icon} {interaction.user.display_name}",
           value="\u200B",
@@ -102,8 +95,7 @@ class Squad(discord.ui.View):
     await botlogchannel.send(embed=embedVar)
     bot.add_view(Squad())
     print(f"{bot.user} is ready!")
-
-    # Starten Sie die Hintergrundaufgabe für den durchlaufenden Status
+    
     @tasks.loop(seconds=10)
     async def change_status():
       global current_status_index
